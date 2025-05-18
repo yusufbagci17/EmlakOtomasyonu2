@@ -1,0 +1,110 @@
+﻿@model IEnumerable<EmlakOtomasyonu.Models.IlanTablosu>
+
+@{
+    ViewData["Title"] = "Admin Panel";
+}
+
+<h2>İlanlar Listesi</h2>
+
+@if (TempData["Basari"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Basari"]
+    </div>
+}
+
+@if (TempData["Hata"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Hata"]
+    </div>
+}
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Başlık</th>
+            <th>Fiyat</th>
+            <th>Tarih</th>
+            <th>Kategori</th>
+            <th>İşlem</th>
+            <th>Vitrin</th>
+            <th>Vitrin Resmi</th>
+            <th>Ek Resimler</th> <!-- Yeni sütun -->
+            <th>Açıklama</th>
+            <th>İç Özellikler</th>
+            <th>İşlemler</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var ilan in Model)
+        {
+            var icOzellik = ilan.IcOzellik;
+            <tr>
+                <td>@ilan.IlanBaslik</td>
+                <td>@ilan.IlanFiyat ₺</td>
+                <td>@ilan.IlanTarih?.ToShortDateString()</td>
+                <td>@ilan.IlanKategori?.KategoriAd</td>
+                <td>@ilan.IlanIslem?.IslemAd</td>
+                <td>
+                    @if (ilan.IlanVitrin)
+                    {
+                        <span class="text-success">Evet</span>
+                    }
+                    else
+                    {
+                        <span class="text-danger">Hayır</span>
+                    }
+                </td>
+                <td>
+                    @if (!string.IsNullOrEmpty(ilan.IlanVresim))
+                    {
+                        <img src="@Url.Content("~/img/" + ilan.IlanVresim)" alt="Vitrin Resmi" style="width: 100px; height: auto;" />
+                    }
+                    else
+                    {
+                        <span>Resim Yok</span>
+                    }
+                </td>
+                <td>
+                    @if (ilan.ResimTablosus != null && ilan.ResimTablosus.Any())
+                    {
+                        @foreach (var resim in ilan.ResimTablosus.Take(3)) 
+                        {
+                            <img src="@Url.Content("~/img/" + resim.ResimResim)" alt="Ek Resim" style="width: 50px; height: auto; margin-right: 5px;" />
+                        }
+                    }
+                    else
+                    {
+                        <span>Ek Resim Yok</span>
+                    }
+                </td>
+                <td>@ilan.IlanAciklama</td>
+                <td>
+                    @if (icOzellik != null)
+                    {
+                        <ul style="list-style-type:none; padding-left:0;">
+                            <li>Asansör: @(icOzellik.IoAsansor ? "Var" : "Yok")</li>
+                            <li>Şömine: @(icOzellik.IoSomine ? "Var" : "Yok")</li>
+                            <li>Mobilya: @(icOzellik.IoMobilyaTakimi ? "Var" : "Yok")</li>
+                            <li>Duş Kabini: @(icOzellik.IoDusKabini ? "Var" : "Yok")</li>
+                        </ul>
+                    }
+                    else
+                    {
+                        <span>Belirtilmemiş</span>
+                    }
+                </td>
+                <td>
+                    <a asp-action="IlanDuzenle" asp-route-ilanId="@ilan.IlanId" class="btn btn-warning">Düzenle</a>
+                    <form asp-action="IlanSil" method="post" style="display:inline;">
+                        <input type="hidden" name="ilanId" value="@ilan.IlanId" />
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Bu ilanı silmek istediğinize emin misiniz?');">Sil</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a href="@Url.Action("IlanEkle", "Home")" class="btn btn-primary">Yeni İlan Ekle</a>

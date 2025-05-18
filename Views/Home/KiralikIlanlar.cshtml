@@ -1,0 +1,33 @@
+﻿@model List<EmlakOtomasyonu.Models.IlanTablosu>
+
+@{
+    ViewData["Title"] = "Kiralık İlanlar";
+}
+
+<div class="container mt-5">
+    <h1>Kiralık İlanlar</h1>
+
+    <div class="row">
+        @if (Model != null && Model.Any())
+        {
+            foreach (var ilan in Model)
+            {
+                <div class="col-md-3">
+                    <div class="card mb-4 shadow-sm">
+                        <a href="@Url.Action("IlanDetay", "Home", new { ilanId = ilan.IlanId })" style="text-decoration: none; color: inherit;">
+                            <img src="@Url.Content("~/img/" + ilan.IlanVresim)" class="card-img-top" alt="Kiralık Resmi">
+                            <div class="card-body">
+                                <h5 class="card-title">@ilan.IlanBaslik</h5>
+                                <p class="card-text">@ilan.IlanFiyat ₺</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <p>Kiralık ilan bulunamadı.</p>
+        }
+    </div>
+</div>

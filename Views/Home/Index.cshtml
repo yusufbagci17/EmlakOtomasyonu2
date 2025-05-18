@@ -1,0 +1,85 @@
+﻿@{
+    ViewData["Title"] = "Anasayfa";
+    var vitrinIlanlari = ViewBag.VitrinIlanlari as List<EmlakOtomasyonu.Models.IlanTablosu>;
+    var sonEklenenler = ViewBag.SonEklenenler as List<EmlakOtomasyonu.Models.IlanTablosu>;
+}
+
+<div style="display: flex; justify-content: space-between; align-items: center;">
+    <h1>Batman Can Emlak</h1>
+
+    <div>
+        <!-- Satılık ve Kiralık Butonları -->
+        <a href="/Home/SatilikIlanlar" style="padding: 10px 20px; background-color: #28a745; color: white; text-decoration: none; border-radius: 5px; margin-right: 10px;">
+            Satılık İlanlar
+        </a>
+        <a href="/Home/KiralikIlanlar" style="padding: 10px 20px; background-color: #ffc107; color: black; text-decoration: none; border-radius: 5px;">
+            Kiralık İlanlar
+        </a>
+    </div>
+
+    <div>
+        <a href="/Home/Login" style="padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px;">
+            Yönetici Girişi
+        </a>
+    </div>
+</div>
+<hr />
+
+<div class="container mt-5">
+    <h2>Vitrin İlanları</h2>
+    <div class="row">
+        @if (vitrinIlanlari != null && vitrinIlanlari.Any())
+        {
+            foreach (var ilan in vitrinIlanlari)
+            {
+                <div class="col-md-3 position-relative">
+                    <div class="card mb-4 shadow-sm">
+
+                        <!-- Detaylar sayfasına yönlendirme -->
+                        <a href="@Url.Action("IlanDetay", "Home", new { ilanId = ilan.IlanId })" style="text-decoration: none; color: inherit;">
+                            <img src="@Url.Content("~/img/" + ilan.IlanVresim)" class="card-img-top" alt="Vitrin Resmi">
+                            <div class="card-body">
+                                <h5 class="card-title">@ilan.IlanBaslik</h5>
+                                <p class="card-text">@ilan.IlanFiyat ₺</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <p>Vitrin için uygun ilan bulunamadı.</p>
+        }
+    </div>
+
+    <hr />
+
+    <h2>Son Eklenenler</h2>
+    <div class="row">
+        @if (sonEklenenler != null && sonEklenenler.Any())
+        {
+            foreach (var ilan in sonEklenenler)
+            {
+                <div class="col-md-3 position-relative">
+                    <div class="card mb-4 shadow-sm">
+                        <!-- Detaylar sayfasına yönlendirme -->
+                        <a href="@Url.Action("IlanDetay", "Home", new { ilanId = ilan.IlanId })" style="text-decoration: none; color: inherit;">
+                            <img src="@Url.Content("~/img/" + ilan.IlanVresim)" class="card-img-top" alt="İlan Resmi">
+                            <div class="card-body">
+                                <h5 class="card-title">@ilan.IlanBaslik</h5>
+                                <p class="card-text">@ilan.IlanFiyat ₺</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <p>Son eklenen ilan bulunamadı.</p>
+        }
+    </div>
+</div>
+
+<script>

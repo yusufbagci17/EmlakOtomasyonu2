@@ -1,0 +1,94 @@
+﻿@model EmlakOtomasyonu.Models.IlanTablosu
+
+@{
+    ViewData["Title"] = "İlan Detayları";
+}
+
+<div class="container mt-5">
+    <h1>@Model.IlanBaslik</h1>
+    <p class="text-muted">
+        @if (Model.IlanTarih.HasValue)
+        {
+            @Model.IlanTarih.Value.ToShortDateString()
+        }
+        else
+        {
+            <span>Tarih bilgisi mevcut değil</span>
+        }
+    </p>
+
+    <div class="row">
+        <div class="col-md-6">
+            <img src="@Url.Content("~/img/" + Model.IlanVresim)" class="img-fluid" alt="Vitrin Resmi">
+        </div>
+        <div class="col-md-6">
+            <h3>Fiyat: @Model.IlanFiyat ₺</h3>
+            <p><strong>Kategori:</strong> @Model.IlanKategori?.KategoriAd</p>
+            <p><strong>İşlem Türü:</strong> @Model.IlanIslem?.IslemAd</p>
+            <p><strong>Açıklama:</strong> @Model.IlanAciklama</p>
+        </div>
+    </div>
+
+    <hr />
+
+    <h4>İç Özellikler:</h4>
+    <ul>
+        @if (Model.IcOzellik != null)
+        {
+            <li>Asansör: @(Model.IcOzellik.IoAsansor ? "Evet" : "Hayır")</li>
+            <li>Şömine: @(Model.IcOzellik.IoSomine ? "Evet" : "Hayır")</li>
+            <li>Mobilya Takımı: @(Model.IcOzellik.IoMobilyaTakimi ? "Evet" : "Hayır")</li>
+            <li>Duş Kabini: @(Model.IcOzellik.IoDusKabini ? "Evet" : "Hayır")</li>
+        }
+        else
+        {
+            <li>Bilgi yok.</li>
+        }
+    </ul>
+
+    <h4>Dış Özellikler:</h4>
+    <ul>
+        @if (Model.DisOzellik != null)
+        {
+            <li>Otopark: @(Model.DisOzellik.DoOtopark ? "Evet" : "Hayır")</li>
+            <li>Oyun Parkı: @(Model.DisOzellik.DoOyunParkı ? "Evet" : "Hayır")</li>
+            <li>Güvenlik: @(Model.DisOzellik.DoGuvenlik ? "Evet" : "Hayır")</li>
+            <li>Kapıcı: @(Model.DisOzellik.DoKapici ? "Evet" : "Hayır")</li>
+        }
+        else
+        {
+            <li>Bilgi yok.</li>
+        }
+    </ul>
+
+    <h4>İlan Detayları:</h4>
+    <ul>
+        @if (Model.IlanDetay != null)
+        {
+            <li>Oda Sayısı: @Model.IlanDetay.IdOdaSayisi</li>
+            <li>Salon Sayısı: @Model.IlanDetay.IdSalonSayisi</li>
+            <li>Bina Yaşı: @Model.IlanDetay.IdBinaYasi</li>
+            <li>Kat Sayısı: @Model.IlanDetay.IdBinaKatSayisi</li>
+            <li>Kaçıncı Kat: @Model.IlanDetay.IdBinaKacinciKat</li>
+            <li>Isıtma Türü: @Model.IlanDetay.IdBinaIsıtma</li>
+            <li>Eşyalı mı?: @(Model.IlanDetay.IdEsyaliMi ? "Evet" : "Hayır")</li>
+        }
+        else
+        {
+            <li>Bilgi yok.</li>
+        }
+    </ul>
+
+    @if (Model.ResimTablosus != null && Model.ResimTablosus.Any())
+    {
+        <h4>Ek Resimler:</h4>
+        <div class="row">
+            @foreach (var resim in Model.ResimTablosus)
+            {
+                <div class="col-md-3">
+                    <img src="@Url.Content("~/img/" + resim.ResimResim)" class="img-fluid mb-3" alt="Ek Resim">
+                </div>
+            }
+        </div>
+    }
+</div>

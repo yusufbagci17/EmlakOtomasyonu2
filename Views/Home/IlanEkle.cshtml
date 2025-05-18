@@ -1,0 +1,135 @@
+﻿@model EmlakOtomasyonu.Models.ViewModels.IlanVeIcOzellikViewModel
+
+@{
+    ViewData["Title"] = "İlan Ekle";
+}
+
+<h2>İlan Ekle</h2>
+
+@if (TempData["Basari"] != null)
+{
+    <div class="alert alert-success">@TempData["Basari"]</div>
+}
+
+<form asp-action="IlanEkle" enctype="multipart/form-data" method="post">
+    <div class="form-group">
+        <label>İlan Başlığı</label>
+        <input type="text" class="form-control" asp-for="Ilan.IlanBaslik" />
+    </div>
+
+    <div class="form-group">
+        <label>Fiyat</label>
+        <input type="number" class="form-control" asp-for="Ilan.IlanFiyat" />
+    </div>
+
+    <div class="form-group">
+        <label>Kategori</label>
+        @Html.DropDownListFor(model => model.Ilan.IlanKategoriId, (SelectList)ViewBag.Kategoriler, "-- Seçiniz --", new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        <label>İşlem</label>
+        @Html.DropDownListFor(model => model.Ilan.IlanIslemId, (SelectList)ViewBag.Islemler, "-- Seçiniz --", new { @class = "form-control" })
+    </div>
+
+
+    <div class="form-group">
+        <label>Açıklama</label>
+        <textarea class="form-control" asp-for="Ilan.IlanAciklama"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label>Vitrin Resmi</label>
+        <input type="file" class="form-control" name="VitrinResim" />
+        <small class="form-text text-muted">İlanın vitrinde görünecek olan resmi buradan yükleyebilirsiniz.</small>
+    </div>
+    <div class="form-group">
+        <label>Ek Resimler (En az 3, en fazla 10)</label>
+        <input type="file" class="form-control" name="Resimler" multiple />
+        <small class="form-text text-muted">İlan için en az 3, en fazla 10 resim yükleyebilirsiniz.</small>
+    </div>
+
+
+    <div class="form-check">
+        <input type="checkbox" class="form-check-input" asp-for="Ilan.IlanVitrin" />
+        <label class="form-check-label" asp-for="Ilan.IlanVitrin">İlan vitrinde bulunsun mu?</label>
+    </div>
+
+    <hr />
+    <h4>İç Özellikler</h4>
+
+    <div class="form-check">
+        <input type="checkbox" class="form-check-input" asp-for="IcOzellik.IoAsansor" />
+        <label class="form-check-label" asp-for="IcOzellik.IoAsansor">Asansör</label>
+    </div>
+
+    <div class="form-check">
+        <input type="checkbox" class="form-check-input" asp-for="IcOzellik.IoSomine" />
+        <label class="form-check-label" asp-for="IcOzellik.IoSomine">Şömine</label>
+    </div>
+
+    <div class="form-check">
+        <input type="checkbox" class="form-check-input" asp-for="IcOzellik.IoMobilyaTakimi" />
+        <label class="form-check-label" asp-for="IcOzellik.IoMobilyaTakimi">Mobilya Takımı</label>
+    </div>
+
+    <div class="form-check">
+        <input type="checkbox" class="form-check-input" asp-for="IcOzellik.IoDusKabini" />
+        <label class="form-check-label" asp-for="IcOzellik.IoDusKabini">Duş Kabini</label>
+    </div>
+    <hr />
+    <h4>Dış Özellikler</h4>
+
+    <div class="form-check">
+        <input type="checkbox" class="form-check-input" asp-for="DisOzellik.DoOtopark" />
+        <label class="form-check-label" asp-for="DisOzellik.DoOtopark">Otopark</label>
+    </div>
+
+    <div class="form-check">
+        <input type="checkbox" class="form-check-input" asp-for="DisOzellik.DoOyunParkı" />
+        <label class="form-check-label" asp-for="DisOzellik.DoOyunParkı">Oyun Parkı</label>
+    </div>
+
+    <div class="form-check">
+        <input type="checkbox" class="form-check-input" asp-for="DisOzellik.DoGuvenlik" />
+        <label class="form-check-label" asp-for="DisOzellik.DoGuvenlik">Güvenlik</label>
+    </div>
+
+    <div class="form-check">
+        <input type="checkbox" class="form-check-input" asp-for="DisOzellik.DoKapici" />
+        <label class="form-check-label" asp-for="DisOzellik.DoKapici">Kapıcı</label>
+    </div>
+    <hr />
+    <h4>İlan Detayları</h4>
+
+    <div class="form-group">
+        <label>Oda Sayısı</label>
+        <input type="number" asp-for="IlanDetay.IdOdaSayisi" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Salon Sayısı</label>
+        <input type="number" asp-for="IlanDetay.IdSalonSayisi" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Bina Yaşı</label>
+        <input type="number" asp-for="IlanDetay.IdBinaYasi" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Toplam Kat Sayısı</label>
+        <input type="number" asp-for="IlanDetay.IdBinaKatSayisi" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Kaçıncı Kat</label>
+        <input type="number" asp-for="IlanDetay.IdBinaKacinciKat" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Isıtma Türü</label>
+        <input type="text" asp-for="IlanDetay.IdBinaIsıtma" class="form-control" />
+    </div>
+    <div class="form-check">
+        <input type="checkbox" asp-for="IlanDetay.IdEsyaliMi" class="form-check-input" />
+        <label class="form-check-label" asp-for="IlanDetay.IdEsyaliMi">Eşyalı mı?</label>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">İlanı Kaydet</button>
+</form>
